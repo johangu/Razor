@@ -100,6 +100,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
             Interpreter.RegisterCommandHandler("potion", Potion);
+			Interpreter.RegisterCommandHandler("pathfind", Pathfind);
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
@@ -1113,6 +1114,25 @@ namespace Assistant.Scripts
             Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, index,
                 menuId, hue));
             World.Player.HasMenu = false;
+            return true;
+        }
+
+        private static bool Pathfind(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2)
+            {
+                throw new RunTimeError(null,
+                    "Usage: pathfind (x, y) or pathfind (x, y, z)");
+            }
+
+            int x = args[0].AsInt();
+            int y = args[1].AsInt();
+            int z = (args.Length > 2) 
+                ? args[2].AsInt() 
+                : 0;
+
+            Client.Instance.Pathfind(x, y, z);
+
             return true;
         }
 
