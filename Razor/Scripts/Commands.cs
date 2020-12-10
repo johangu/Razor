@@ -100,7 +100,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
             Interpreter.RegisterCommandHandler("potion", Potion);
-			Interpreter.RegisterCommandHandler("pathfind", Pathfind);
+            Interpreter.RegisterCommandHandler("pathfind", Pathfind);
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
