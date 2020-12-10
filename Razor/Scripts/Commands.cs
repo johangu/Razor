@@ -1125,13 +1125,13 @@ namespace Assistant.Scripts
                     "Usage: pathfind (x, y) or pathfind (x, y, z)");
             }
 
-            int x = args[0].AsInt();
-            int y = args[1].AsInt();
-            int z = (args.Length > 2) 
-                ? args[2].AsInt() 
+            ushort x = (ushort) args[0].AsInt();
+            ushort y = (ushort) args[1].AsInt();
+            ushort z = (args.Length > 2) 
+                ? (ushort) args[2].AsInt() 
                 : 0;
 
-            Client.Instance.Pathfind(x, y, z);
+            Client.Instance.SendToClient(new PathFindTo(new Point3D(x, y, z)));
 
             return true;
         }

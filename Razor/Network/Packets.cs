@@ -1765,16 +1765,6 @@ namespace Assistant
         }
     }
 
-    public sealed class Pathfind : Packet
-    {
-        public Pathfind(int x, int y, int z) : base(0x38, 7)
-        {
-            Write((ushort) x);
-            Write((ushort) y);
-            Write((ushort) z);
-        }
-    }
-
     internal sealed class PromptResponse : Packet
     {
         internal PromptResponse(uint serial, uint promptid, uint operation, string lang, string text)
