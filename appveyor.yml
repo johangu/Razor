@@ -1,7 +1,7 @@
 version: 1.6.8.{build}
 branches:
   only:
-  - master
+  - main
 skip_tags: true
 skip_branch_with_pr: true
 image: Visual Studio 2019
