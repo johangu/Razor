@@ -1,13 +1,13 @@
 ![razor](images/razor.png)
 
-# Razor (UO:R Community Edition)
+# Razor - Community Edition
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor)
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
-This guide was written for the **Razor UO:Renaissance Community Edition**.
+This guide was written for the **Razor Community Edition**.
 
 For more information about this version of Razor, read the [history](#history), review the [release notes](./releasenotes.md) and [download](./download.md) Razor.
 
@@ -34,24 +34,24 @@ Another version of Razor exists (the `1.0.14.x` versions) and is/was maintained 
 
 In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/ClassicUO) was officially established.
 
-## UO:R Community Edition
+## Community Edition
 
-When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) has came from the [UO:Renaissance](http://www.uorenaissance.com) community where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
+When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the few freeshards where the rules only allow for the use of Razor. The original **UO:R Community Edition** name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
 
-Since then, this version of Razor was updated to support the ClassicUO client with feedback and contributions coming from  all different corners of the freeshard UO community -- from large to small shards.
+As the popularity of this version of Razor grew, especially after ClassicUO support was implemented, it become widely used across the whole UO freeshard community, from small private shards to some of the largest shards in the community and continues to be built on the feedback and contributions from all different corners of the that community.
 
-Thank you to all the folks across the whole community who have contributed in some way towards creating this version of Razor. If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
+With that said, I find it more appropriate to simply call this version the **Razor Community Edition**.
 
-**TL;DR:** If you want to use this version of Razor, regardless of the Ultima Online server you play on, this version should work. This version isn't tied to any specific shard. These updates to Razor are for all the Ultima Online Community to use and benefit from. Play UO on the shard that gives you the most enjoyment.
+Thank you to everyone across the whole UO freeshard community who has contributed in some way on this version of Razor.
 
-For me, that shard is [UO:Renaissance](http://www.uorenaissance.com).
+If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
 
 # Help
 
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
 * Submit a feature/bug/issue on our [official Razor GitHub Repo](https://github.com/markdwags/Razor/issues).
-* Join us in #razor on Discord (this is the official [ClassicUO](https://www.classicuo.eu/) Discord server)
+* Join us in #razor on Discord (we use the the official [ClassicUO](https://www.classicuo.eu/) Discord server)
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 

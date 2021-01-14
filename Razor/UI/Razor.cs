@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -427,7 +427,7 @@ namespace Assistant
 
             lastBackup.SafeAction(s => { s.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}"; });
 
-            targetIndictorFormat.SafeAction(s => { s.Text = Config.GetString("TargetIndicatorFormat"); });
+            targetIndicatorFormat.SafeAction(s => { s.Text = Config.GetString("TargetIndicatorFormat"); });
 
             nextPrevIgnoresFriends.SafeAction(s => { s.Checked = Config.GetBool("NextPrevTargetIgnoresFriends"); });
 
@@ -490,13 +490,9 @@ namespace Assistant
             autoSaveScriptPlay.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScriptPlay"); });
 
             highlightFriend.SafeAction(s => { s.Checked = Config.GetBool("HighlightFriend"); });
-
-            scriptDClickTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptDClickTypeRange"); });
-            scriptTargetTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptTargetTypeRange"); });
-            scriptFindTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptFindTypeRange"); });
-
-            scriptDisablePlayFinish.SafeAction(s => { s.Checked = Config.GetBool("ScriptDisablePlayFinish"); });
             
+            scriptDisablePlayFinish.SafeAction(s => { s.Checked = Config.GetBool("ScriptDisablePlayFinish"); });
+
             showWaypointOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowWaypointOverhead"); });
             showWaypointDistance.SafeAction(s => { s.Checked = Config.GetBool("ShowWaypointDistance"); });
             txtWaypointDistanceSec.SafeAction(s => { s.Text = Config.GetInt("ShowWaypointSeconds").ToString(); });
@@ -958,7 +954,7 @@ namespace Assistant
             Config.SetProperty("ShowCorpseNames", incomingCorpse.Checked);
         }
 
-        private ContextMenu m_SkillMenu;
+        private ContextMenuStrip m_SkillMenu;
 
         private void skillList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -973,16 +969,14 @@ namespace Assistant
 
                 if (m_SkillMenu == null)
                 {
-                    m_SkillMenu = new ContextMenu(new MenuItem[]
-                    {
-                        new MenuItem(Language.GetString(LocString.SetSLUp), new EventHandler(onSetSkillLockUP)),
-                        new MenuItem(Language.GetString(LocString.SetSLDown), new EventHandler(onSetSkillLockDOWN)),
-                        new MenuItem(Language.GetString(LocString.SetSLLocked), new EventHandler(onSetSkillLockLOCKED))
-                    });
+                    m_SkillMenu = new ContextMenuStrip();
+                    m_SkillMenu.Items.Add(Language.GetString(LocString.SetSLUp), null, onSetSkillLockUP);
+                    m_SkillMenu.Items.Add(Language.GetString(LocString.SetSLDown), null, onSetSkillLockDOWN);
+                    m_SkillMenu.Items.Add(Language.GetString(LocString.SetSLLocked), null, onSetSkillLockLOCKED);
                 }
 
                 for (int i = 0; i < 3; i++)
-                    m_SkillMenu.MenuItems[i].Checked = ((int) s.Lock) == i;
+                    ((ToolStripMenuItem)m_SkillMenu.Items[i]).Checked = ((int) s.Lock) == i;
 
                 m_SkillMenu.Show(skillList, new Point(e.X, e.Y));
             }
@@ -2231,14 +2225,14 @@ namespace Assistant
             Config.SetAppSetting("ShowWelcome", (showWelcome.Checked ? 1 : 0).ToString());
         }
 
-        private ContextMenu m_DressItemsMenu = null;
+        private ContextMenuStrip m_DressItemsMenu = null;
 
         private void dressItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                m_DressItemsMenu = new ContextMenu(new MenuItem[]
-                    {new MenuItem(Language.GetString(LocString.Conv2Type), new EventHandler(OnMakeType))});
+                m_DressItemsMenu = new ContextMenuStrip();
+                m_DressItemsMenu.Items.Add(Language.GetString(LocString.Conv2Type), null, OnMakeType);
                 m_DressItemsMenu.Show(dressItems, new Point(e.X, e.Y));
             }
         }
@@ -2464,7 +2458,7 @@ namespace Assistant
             RedrawMacros();
         }
 
-        private ContextMenu m_MacroContextMenu = null;
+        private ContextMenuStrip m_MacroContextMenu = null;
 
         private void macroTree_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -2472,26 +2466,24 @@ namespace Assistant
             {
                 if (m_MacroContextMenu == null)
                 {
-                    m_MacroContextMenu = new ContextMenu(new MenuItem[]
-                    {
-                        new MenuItem("Add Category", new EventHandler(Macro_AddCategory)),
-                        new MenuItem("Delete Category", new EventHandler(Macro_DeleteCategory)),
-                        new MenuItem("Move to Category", new EventHandler(Macro_Move2Category)),
-                        new MenuItem("-"),
-                        new MenuItem("Copy to Clipboard", new EventHandler(Macro_CopyToClipboard)),
-                        new MenuItem("Rename Macro", new EventHandler(Macro_Rename)),
-                        new MenuItem("Open Externally", new EventHandler(Open_Externally)),
-                        new MenuItem("-"),
-                        new MenuItem("Convert to Script", new EventHandler(ConvertMacroToScript)),
-                        new MenuItem("-"),
-                        new MenuItem("Refresh Macro List", new EventHandler(Macro_RefreshList))
-                    });
+                    m_MacroContextMenu = new ContextMenuStrip();
+                    m_MacroContextMenu.Items.Add("Add Category", null, Macro_AddCategory);
+                    m_MacroContextMenu.Items.Add("Delete Category", null, Macro_DeleteCategory);
+                    m_MacroContextMenu.Items.Add("Move to Category", null, Macro_Move2Category);
+                    m_MacroContextMenu.Items.Add("-");
+                    m_MacroContextMenu.Items.Add("Copy to Clipboard", null, Macro_CopyToClipboard);
+                    m_MacroContextMenu.Items.Add("Rename Macro", null, Macro_Rename);
+                    m_MacroContextMenu.Items.Add("Open Externally", null, Open_Externally);
+                    m_MacroContextMenu.Items.Add("-");
+                    m_MacroContextMenu.Items.Add("Convert to Script", null, ConvertMacroToScript);
+                    m_MacroContextMenu.Items.Add("-");
+                    m_MacroContextMenu.Items.Add("Refresh Macro List", null, Macro_RefreshList);
                 }
 
                 Macro sel = GetMacroSel();
 
-                m_MacroContextMenu.MenuItems[1].Enabled = sel == null;
-                m_MacroContextMenu.MenuItems[2].Enabled = sel != null;
+                m_MacroContextMenu.Items[1].Enabled = sel == null;
+                m_MacroContextMenu.Items[2].Enabled = sel != null;
 
                 m_MacroContextMenu.Show(this, new Point(e.X, e.Y));
             }
@@ -2942,9 +2934,9 @@ namespace Assistant
                 if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
                     return;
 
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
-                menu.MenuItems.Add(Language.GetString(LocString.Save), new EventHandler(onMacroSave));
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add(Language.GetString(LocString.Reload), null, onMacroReload);
+                menu.Items.Add(Language.GetString(LocString.Save), null, onMacroSave);
 
                 MacroAction a;
                 try
@@ -2960,69 +2952,67 @@ namespace Assistant
                 {
                     int pos = actionList.SelectedIndex;
 
-                    menu.MenuItems.Add("-");
+                    menu.Items.Add("-");
                     if (actionList.Items.Count > 1)
                     {
-                        menu.MenuItems.Add(Language.GetString(LocString.MoveUp), new EventHandler(OnMacroActionMoveUp));
+                        menu.Items.Add(Language.GetString(LocString.MoveUp), null, OnMacroActionMoveUp);
 
                         if (pos <= 0)
                         {
-                            menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+                            menu.Items[menu.Items.Count - 1].Enabled = false;
                         }
 
-                        menu.MenuItems.Add(Language.GetString(LocString.MoveDown),
-                            new EventHandler(OnMacroActionMoveDown));
+                        menu.Items.Add(Language.GetString(LocString.MoveDown), null, OnMacroActionMoveDown);
 
                         if (pos >= actionList.Items.Count - 1)
                         {
-                            menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+                            menu.Items[menu.Items.Count - 1].Enabled = false;
                         }
 
-                        menu.MenuItems.Add("-");
+                        menu.Items.Add("-");
                     }
 
-                    menu.MenuItems.Add("Copy Line", new EventHandler(onMacroCopyLine));
-                    menu.MenuItems.Add("Paste Line", new EventHandler(onMacroPasteLine));
+                    menu.Items.Add("Copy Line", null, onMacroCopyLine);
+                    menu.Items.Add("Paste Line", null, onMacroPasteLine);
 
-                    menu.MenuItems.Add(Language.GetString(LocString.RemAct), new EventHandler(onMacroActionDelete));
-                    menu.MenuItems.Add("-");
-                    menu.MenuItems.Add(Language.GetString(LocString.BeginRec), new EventHandler(onMacroBegRecHere));
-                    menu.MenuItems.Add(Language.GetString(LocString.PlayFromHere), new EventHandler(onMacroPlayHere));
+                    menu.Items.Add(Language.GetString(LocString.RemAct), null, onMacroActionDelete);
+                    menu.Items.Add("-");
+                    menu.Items.Add(Language.GetString(LocString.BeginRec), null, onMacroBegRecHere);
+                    menu.Items.Add(Language.GetString(LocString.PlayFromHere), null, onMacroPlayHere);
 
-                    MenuItem[] aMenus = a.GetContextMenuItems();
+                    ToolStripMenuItem[] aMenus = a.GetContextMenuItems();
                     if (aMenus != null && aMenus.Length > 0)
                     {
-                        menu.MenuItems.Add("-");
-                        menu.MenuItems.AddRange(aMenus);
+                        menu.Items.Add("-");
+                        menu.Items.AddRange(aMenus);
                     }
                 }
 
-                menu.MenuItems.Add("-");
+                menu.Items.Add("-");
 
-                menu.MenuItems.Add(Language.GetString(LocString.Constructs), new MenuItem[]
-                {
-                    new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
-                    new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
-                    new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
-                    new MenuItem(Language.GetString(LocString.InsertOverheadMessage),
-                        new EventHandler(onMacroInsertOverheadMessage)),
-                    new MenuItem(Language.GetString(LocString.InsertWaitForTarget),
-                        new EventHandler(onMacroInsertWaitForTarget)),
-                    new MenuItem(Language.GetString(LocString.InsertClearSysMsg), new EventHandler(onMacroInsertClearSysMsg)),
-                    new MenuItem("-"),
-                    new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
-                    new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
-                    new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
-                    new MenuItem("-"),
-                    new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
-                    new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor)),
-                    new MenuItem("-"),
-                    new MenuItem(Language.GetString(LocString.InsertWhile), new EventHandler(onMacroInsertWhile)),
-                    new MenuItem(Language.GetString(LocString.InsertEndWhile), new EventHandler(onMacroInsertEndWhile)),
-                    new MenuItem("-"),
-                    new MenuItem(Language.GetString(LocString.InsertDo), new EventHandler(onMacroInsertDo)),
-                    new MenuItem(Language.GetString(LocString.InsertDoWhile), new EventHandler(onMacroInsertDoWhile)),
-                });
+                ToolStripMenuItem submenu = new ToolStripMenuItem(Language.GetString(LocString.Constructs));
+
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsWait), null, onMacroInsPause);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsLT), null, onMacroInsertSetLT);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsComment), null, onMacroInsertComment);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertOverheadMessage), null, onMacroInsertOverheadMessage);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertWaitForTarget), null, onMacroInsertWaitForTarget);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertClearSysMsg), null, onMacroInsertClearSysMsg);
+                submenu.DropDownItems.Add("-");
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsIF), null, onMacroInsertIf);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsELSE), null, onMacroInsertElse);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsENDIF), null, onMacroInsertEndIf);
+                submenu.DropDownItems.Add("-");
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsFOR), null, onMacroInsertFor);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsENDFOR), null, onMacroInsertEndFor);
+                submenu.DropDownItems.Add("-");
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertWhile), null, onMacroInsertWhile);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertEndWhile), null, onMacroInsertEndWhile);
+                submenu.DropDownItems.Add("-");
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertDo), null, onMacroInsertDo);
+                submenu.DropDownItems.Add(Language.GetString(LocString.InsertDoWhile), null, onMacroInsertDoWhile);
+
+                menu.Items.Add(submenu);
 
                 menu.Show(actionList, new Point(e.X, e.Y));
             }
@@ -3044,7 +3034,7 @@ namespace Assistant
                 if (a == null)
                     return;
 
-                MenuItem[] aMenus = a.GetContextMenuItems();
+                ToolStripMenuItem[] aMenus = a.GetContextMenuItems();
 
                 if (aMenus != null && aMenus.Length > 0)
                 {
@@ -3183,7 +3173,7 @@ namespace Assistant
             if (a >= m.Actions.Count) // -1 is valid, will insert @ top
                 return;
 
-            MenuItem mnu = (MenuItem) sender;
+            ToolStripMenuItem mnu = (ToolStripMenuItem) sender;
 
             m.Actions.Insert(a + 1, new SetMacroVariableTargetAction(mnu.Text));
             RedrawActionList(m);
@@ -3648,14 +3638,14 @@ namespace Assistant
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();
+                ContextMenuStrip menu = new ContextMenuStrip();
                
-                menu.MenuItems.Add("Delete", new EventHandler(DeleteScreenCap));
+                menu.Items.Add("Delete", null, DeleteScreenCap);
 
                 if (screensList.SelectedIndex == -1)
-                    menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+                    menu.Items[menu.Items.Count - 1].Enabled = false;
 
-                menu.MenuItems.Add("Delete ALL", new EventHandler(ClearScreensDirectory));
+                menu.Items.Add("Delete ALL", null, ClearScreensDirectory);
 
 
                 menu.Show(screensList, new Point(e.X, e.Y));
@@ -4636,12 +4626,7 @@ namespace Assistant
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.uor-razor.com");
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.uorenaissance.com");
+            Utility.LaunchBrowser("http://www.razorce.com");
         }
 
         private void targetByTypeDifferent_CheckedChanged(object sender, EventArgs e)
@@ -4834,11 +4819,11 @@ namespace Assistant
 
             //if (e.Button == MouseButtons.Right && e.Clicks == 1)
             //{
-            //    ContextMenu menu = new ContextMenu();
-            //    //menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
-            //    menu.MenuItems.Add("Import (Copy from clipboard)", new EventHandler(OnAgentImport));
+            //    ContextMenuStrip menu = new ContextMenuStrip();
+            //    //menu.MenuItems.Add(Language.GetString(LocString.Reload), onMacroReload);
+            //    menu.MenuItems.Add("Import (Copy from clipboard)", OnAgentImport);
             //    menu.MenuItems.Add("-");
-            //    menu.MenuItems.Add("Export (Copy to clipboard)", new EventHandler(OnAgentExport));
+            //    menu.MenuItems.Add("Export (Copy to clipboard)", OnAgentExport);
 
             //    menu.Show(agentSubList, new Point(e.X, e.Y));
             //}
@@ -5175,7 +5160,7 @@ namespace Assistant
 
         private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.uor-razor.com/help/");
+            Utility.LaunchBrowser("http://www.razorce.com/help/");
         }
 
         private void enableUOAAPI_CheckedChanged(object sender, EventArgs e)
@@ -5209,15 +5194,15 @@ namespace Assistant
             }
         }
 
-        private void targetIndictorFormat_TextChanged(object sender, EventArgs e)
+        private void targetIndicatorFormat_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(targetIndictorFormat.Text))
+            if (string.IsNullOrEmpty(targetIndicatorFormat.Text))
             {
                 Config.SetProperty("TargetIndicatorFormat", "* Target *");
-                targetIndictorFormat.Text = "* Target *";
+                targetIndicatorFormat.Text = "* Target *";
             }
 
-            Config.SetProperty("TargetIndicatorFormat", targetIndictorFormat.Text);
+            Config.SetProperty("TargetIndicatorFormat", targetIndicatorFormat.Text);
         }
 
         private void nextPrevIgnoresFriends_CheckedChanged(object sender, EventArgs e)
@@ -5246,7 +5231,7 @@ namespace Assistant
 
         private void linkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/markdwags/Razor");
+            Utility.LaunchBrowser("https://github.com/markdwags/Razor");
         }
 
         /// <summary>
@@ -5480,7 +5465,7 @@ namespace Assistant
             //FriendOverheadFormat
             if (string.IsNullOrEmpty(friendOverheadFormat.Text))
             {
-                targetIndictorFormat.SafeAction(s => s.Text = "[Friend]");
+                targetIndicatorFormat.SafeAction(s => s.Text = "[Friend]");
             }
 
             friendOverheadFormat.SafeAction(s => FriendsManager.SetOverheadFormat((FriendsManager.FriendGroup)friendsGroup.SelectedItem,
@@ -5525,11 +5510,11 @@ namespace Assistant
 
             if ((e.Button & MouseButtons.Right) != 0)
             {
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends),
-                    new EventHandler(onAddAllMobilesAsFriends));
-                menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends),
-                    new EventHandler(onAddAllHumanoidsAsFriends));
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add(Language.GetString(LocString.AddAllMobileFriends), null,
+                    onAddAllMobilesAsFriends);
+                menu.Items.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends), null,
+                    onAddAllHumanoidsAsFriends);
 
                 menu.Show(friendAddTarget, new Point(e.X, e.Y));
             }
@@ -5582,9 +5567,9 @@ namespace Assistant
 
             if (e.Button == MouseButtons.Right)
             {
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Import 'Friends' from clipboard", new EventHandler(onImportFriends));
-                menu.MenuItems.Add("Export 'Friends' to clipboard", new EventHandler(onExportFriends));
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add("Import 'Friends' from clipboard", null, onImportFriends);
+                menu.Items.Add("Export 'Friends' to clipboard", null, onExportFriends);
 
                 menu.Show(friendsList, new Point(e.X, e.Y));
             }
@@ -6337,17 +6322,17 @@ namespace Assistant
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();
+                ContextMenuStrip menu = new ContextMenuStrip();
 
                 if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
                 {
-                    menu.MenuItems.Add("Comment", OnScriptComment);
-                    menu.MenuItems.Add("Uncomment", OnScriptUncomment);
+                    menu.Items.Add("Comment", null, OnScriptComment);
+                    menu.Items.Add("Uncomment", null, OnScriptUncomment);
 
                     if (!string.IsNullOrEmpty(scriptEditor.SelectedText) && !ScriptManager.Running && !ScriptManager.Recording && World.Player != null)
                     {
-                        menu.MenuItems.Add("-");
-                        menu.MenuItems.Add("Play selected script code", OnScriptPlaySelected);
+                        menu.Items.Add("-");
+                        menu.Items.Add("Play selected script code", null, OnScriptPlaySelected);
 
                         int space = scriptEditor.SelectedText.IndexOf(" ", StringComparison.Ordinal);
 
@@ -6357,17 +6342,18 @@ namespace Assistant
 
                             if (command.Equals("dclick"))
                             {
-                                menu.MenuItems.Add("-");
-                                menu.MenuItems.Add("Convert to 'dclicktype' by gfxid", OnScriptDclickTypeId);
-                                menu.MenuItems.Add("Convert to 'dclicktype' by name", OnScriptDclickTypeName);
+                                menu.Items.Add("-");
+                                menu.Items.Add("Convert to 'dclicktype' by gfxid", null, OnScriptDclickTypeId);
+                                menu.Items.Add("Convert to 'dclicktype' by name", null, OnScriptDclickTypeName);
                             }
                         }
                     }
 
-                    menu.MenuItems.Add("-");
+                    menu.Items.Add("-");
                 }
 
-                menu.MenuItems.Add(scriptSplitContainer.Panel1Collapsed ? "Show script tree" : "Hide script tree",
+                menu.Items.Add(scriptSplitContainer.Panel1Collapsed ? "Show script tree" : "Hide script tree",
+                    null,
                     OnScriptHideTreeView);
 
                 menu.Show(scriptEditor, new Point(e.X, e.Y));
@@ -6518,25 +6504,10 @@ namespace Assistant
                 s.EndUpdate();
             });
         }
-
-        private void scriptTargetTypeRange_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScriptTargetTypeRange", scriptTargetTypeRange.Checked);
-        }
-
-        private void scriptDClickTypeRange_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScriptDClickTypeRange", scriptDClickTypeRange.Checked);
-        }
-
-        private void scriptFindTypeRange_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScriptFindTypeRange", scriptFindTypeRange.Checked);
-        }
-
+        
         private void disableScriptPlayFinish_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("ScriptDisablePlayFinish", scriptFindTypeRange.Checked);
+            Config.SetProperty("ScriptDisablePlayFinish", scriptDisablePlayFinish.Checked);
         }
 
         private void btnUseCurrentLoc_Click(object sender, EventArgs e)
@@ -6635,17 +6606,17 @@ namespace Assistant
 
         private void scriptGuide_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.uor-razor.com/guide/");
+            Utility.LaunchBrowser("http://www.razorce.com/guide/");
         }
         private void listWaypoints_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Import Waypoints", onImportWaypoints);
-                menu.MenuItems.Add("Export Waypoints", onExportWaypoints);
-                menu.MenuItems.Add("-");
-                menu.MenuItems.Add("Clear All Waypoints", onClearWaypoints);
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add("Import Waypoints", null, onImportWaypoints);
+                menu.Items.Add("Export Waypoints", null, onExportWaypoints);
+                menu.Items.Add("-");
+                menu.Items.Add("Clear All Waypoints", null, onClearWaypoints);
 
                 menu.Show(waypointList, new Point(e.X, e.Y));
             }
@@ -7018,7 +6989,7 @@ namespace Assistant
             });
         }
 
-        private ContextMenu m_ScriptContextMenu = null;
+        private ContextMenuStrip m_ScriptContextMenu = null;
 
         private void scriptTree_MouseDown(object sender, MouseEventArgs e)
         {
@@ -7026,28 +6997,28 @@ namespace Assistant
 
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                m_ScriptContextMenu = new ContextMenu();
+                m_ScriptContextMenu = new ContextMenuStrip();
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add category", AddScriptCategory));
+                m_ScriptContextMenu.Items.Add("Add category", null, AddScriptCategory);
 
                 if (scriptTree.SelectedNode != null && scriptTree.SelectedNode.Tag is string)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete category", Script_DeleteCategory));
+                    m_ScriptContextMenu.Items.Add("Delete category", null, Script_DeleteCategory);
                 }
                 else if (selScript != null)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to category", MoveScriptCategory));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Rename '{selScript.Name}'", RenameScript));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Delete '{selScript.Name}'", DeleteScript));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Open '{selScript.Name}' externally", OpenScriptExternally));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to clipboard", CopyScriptToClipboard));
+                    m_ScriptContextMenu.Items.Add("Move to category", null, MoveScriptCategory);
+                    m_ScriptContextMenu.Items.Add("-");
+                    m_ScriptContextMenu.Items.Add($"Rename '{selScript.Name}'", null, RenameScript);
+                    m_ScriptContextMenu.Items.Add($"Delete '{selScript.Name}'", null, DeleteScript);
+                    m_ScriptContextMenu.Items.Add("-");
+                    m_ScriptContextMenu.Items.Add($"Open '{selScript.Name}' externally", null, OpenScriptExternally);
+                    m_ScriptContextMenu.Items.Add("Copy to clipboard", null, CopyScriptToClipboard);
                 }
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload all scripts", ReloadScripts));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
+                m_ScriptContextMenu.Items.Add("-");
+                m_ScriptContextMenu.Items.Add("Reload all scripts", null, ReloadScripts);
+                m_ScriptContextMenu.Items.Add("Hide script tree", null, HideScriptTreeView);
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
             }

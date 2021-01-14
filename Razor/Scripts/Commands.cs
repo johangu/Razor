@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,11 +49,11 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
 
             // Using stuff
-            Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("dclicktype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("dclick", DClick); //DoubleClickAction
 
-            Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("usetype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("useobject", DClick); //DoubleClickAction
 
             // Moving stuff
             Interpreter.RegisterCommandHandler("drop", DropItem); //DropAction
@@ -227,7 +227,7 @@ namespace Assistant.Scripts
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
-            bool inRangeCheck = Config.GetBool("ScriptTargetTypeRange");
+            bool inRangeCheck = false;
             bool backpack = false;
 
             if (args.Length == 2)
@@ -291,7 +291,7 @@ namespace Assistant.Scripts
                 {
                     if (find.Body == gfx)
                     {
-                        if (Config.GetBool("ScriptTargetTypeRange"))
+                        if (inRangeCheck)
                         {
                             if (Utility.InRange(World.Player.Position, find.Position, 2))
                             {
@@ -536,7 +536,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseType(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClickType(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -549,7 +549,7 @@ namespace Assistant.Scripts
             Serial click = Serial.Zero;
             List<Item> items = new List<Item>();
 
-            bool inRangeCheck = Config.GetBool("ScriptDClickTypeRange");
+            bool inRangeCheck = false;
             bool backpack = false;
 
             if (args.Length == 2)
@@ -684,7 +684,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseObject(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClick(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -705,25 +705,30 @@ namespace Assistant.Scripts
 
         private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
                 throw new RunTimeError(null, "Usage: drop (serial) (x y z/layername)");
             }
 
-            Serial serial = args[0].AsSerial();
+            Serial serial = args[0].AsString().IndexOf("ground", StringComparison.InvariantCultureIgnoreCase) > 0
+                ? uint.MaxValue
+                : args[0].AsSerial();
+
             Point3D to = new Point3D(0, 0, 0);
             Layer layer = Layer.Invalid;
 
             switch (args.Length)
             {
-                case 1: // drop at feet
+                case 1: // drop at feet if only serial is provided
                     to = new Point3D(World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z);
                     break;
                 case 2: // dropping on a layer
                     layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
                     break;
-
-                default: // dropping at x/y/z
+                case 3: // x y
+                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0), 0);
+                    break;
+                case 4: // x y z
                     to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
                         Utility.ToInt32(args[3].AsString(), 0));
                     break;
@@ -784,7 +789,12 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, "lift - invalid serial");
             }
 
-            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+            ushort amount = 1;
+
+            if (args.Length == 2)
+            {
+                amount = Utility.ToUInt16(args[1].AsString(), 1);
+            }
 
             Item item = World.FindItem(serial);
             if (item != null)

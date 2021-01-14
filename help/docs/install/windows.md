@@ -30,11 +30,10 @@ This [Powershell script](https://github.com/markdwags/Razor/blob/master/InstallC
 * Execute the following PowerShell commands
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(
-'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
 ```
 
-!!! warning 
+!!! warning
     If you are on an older version of Windows, you may experience issues running this command.  You can get the latest version [here](https://www.microsoft.com/en-us/download/details.aspx?id=54616).
 
 * Follow the on-screen prompts to set up the ClassicUO settings.json file first the first time.
@@ -130,7 +129,7 @@ The **Welcome Screen** will control some of these settings, but some settings ca
     <add key="MaxRestockAgents" value="10" /> <!-- Override the default Restock agent count -->
     <add key="ImportProfilesAndMacros" value="false" />  <!-- If true, will import macros and profiles from %AppData%\Razor -->
     <add key="LastProfile" value="Test" /> <!-- Last profile used in Razor -->
-    <add key="LastServer" value="test.uorenaissance.com" /> <!-- Last server connected to in Razor -->
+    <add key="LastServer" value="test.server.com" /> <!-- Last server connected to in Razor -->
     <add key="LastPort" value="2597" /> <!-- Last server port connected to in Razor -->
     <add key="LastServerId" value="1" /> <!-- Index of the server selected in the dropdown -->
     <add key="ShowWelcome" value="1" /> <!-- Show the Welcome Screen when loading Razor -->

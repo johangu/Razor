@@ -2,6 +2,23 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.6.8.15 (12/15/2020)
+
+* Implemented treeview and categories for scripts
+* Added ability to adjust the size of the script editing window and the list of scripts
+* `script` command can now call the new supported categories
+* Added `findbuff` scripting expression
+* Fixed right-click menu not opening when selecting something in the script editor
+* Script will throw an error if you use `if count` with an counter that isn't setup
+* Fixed issue with the individual sound filter being off by 1
+* Added `guild` and `alliance` scripting commands
+* Converting macros to scripts will retain the same name if available
+* Added `position` scripting expression
+* Added ability to override which weapons Razor consider two handed
+* ++ctrl+s++ will save the current script you're editing
+* Save indicator in main window when editing scripts
+* Fixed issue with `lift` command requiring the optional parameter
+
 ## 1.6.7.10 (10/24/2020)
 
 * `>info` command gump will close when you try to close it

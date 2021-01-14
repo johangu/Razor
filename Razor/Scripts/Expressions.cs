@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -65,6 +65,13 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
 
             Interpreter.RegisterExpressionHandler("position", Position);
+
+            Interpreter.RegisterExpressionHandler("queued", Queued);
+        }
+
+        private static bool Queued(string expression, Argument[] args, bool quiet)
+        {
+            return !ActionQueue.Empty;
         }
 
         private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
@@ -96,7 +103,7 @@ namespace Assistant.Scripts
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
-            bool inRangeCheck = Config.GetBool("ScriptFindTypeRange");
+            bool inRangeCheck = false;
 
             if (args.Length == 2)
             {
